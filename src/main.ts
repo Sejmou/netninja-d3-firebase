@@ -1,5 +1,13 @@
 import './style.css';
-import { select, json, scaleLinear, max, scaleBand } from 'd3';
+import {
+  select,
+  json,
+  scaleLinear,
+  max,
+  scaleBand,
+  axisBottom,
+  axisLeft,
+} from 'd3';
 
 const svg = select('.canvas')
   .append('svg')
@@ -53,4 +61,13 @@ json<MenuEntry[]>('menu.json').then(data => {
     .attr('width', x.bandwidth)
     .attr('x', d => x(d.name)!)
     .attr('fill', 'orange');
+
+  // add axes
+  const xAxisGroup = graph.append('g');
+  const yAxisGroup = graph.append('g');
+  const xAxis = axisBottom(x);
+  const yAxis = axisLeft(y);
+
+  xAxisGroup.call(xAxis);
+  yAxisGroup.call(yAxis);
 });
