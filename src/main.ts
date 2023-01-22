@@ -1,14 +1,14 @@
 import './style.css';
-import * as d3 from 'd3';
+import { select, json } from 'd3';
 
-const svg = d3.select('.canvas');
+const svg = select('.canvas');
 
 interface MenuEntry {
   name: string;
   orders: number;
 }
 
-d3.json<MenuEntry[]>('menu.json').then(data => {
+json<MenuEntry[]>('menu.json').then(data => {
   if (!data) {
     console.error('No data found!');
     return;
