@@ -11,6 +11,16 @@ interface MenuEntry {
   orders: number;
 }
 
+const margin = { top: 20, right: 20, bottom: 100, left: 100 };
+const graphWidth = 600 - margin.left - margin.right;
+const graphHeight = 600 - margin.top - margin.bottom;
+
+const graph = svg
+  .append('g')
+  .attr('width', graphWidth)
+  .attr('height', graphHeight)
+  .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
 json<MenuEntry[]>('menu.json').then(data => {
   if (!data) {
     console.error('No data found!');
@@ -29,7 +39,7 @@ json<MenuEntry[]>('menu.json').then(data => {
     .range([0, 500]);
 
   // join data to rect elements in SVG (as SVG is empty, we will only get enter selections and no actual already existing DOM elements)
-  const bars = svg.selectAll('rect').data(data);
+  const bars = graph.selectAll('rect').data(data);
 
   // add enter selection to DOM (again need to append as rect elements? - confusing lol), link data characteristics to attributes
   bars
