@@ -1,5 +1,5 @@
 import './style.css';
-import { select, json, scaleLinear, max } from 'd3';
+import { select, json, scaleLinear, max, scaleBand } from 'd3';
 
 const svg = select('.canvas');
 
@@ -13,6 +13,12 @@ json<MenuEntry[]>('menu.json').then(data => {
     console.error('No data found!');
     return;
   }
+
+  const x = scaleBand()
+    .domain(data.map(d => d.name))
+    .range([0, 500])
+    .paddingInner(0.2) // space between bars
+    .paddingOuter(0.1); // space between bars and edges of SVG
 
   const yValue = (d: MenuEntry) => d.orders;
   const y = scaleLinear()
@@ -31,7 +37,7 @@ json<MenuEntry[]>('menu.json').then(data => {
       return 0;
     })
     .attr('height', d => y(d.orders))
-    .attr('width', 50)
-    .attr('x', (_, i) => i * 60)
+    .attr('width', x.bandwidth)
+    .attr('x', d => x(d.name)!)
     .attr('fill', 'orange');
 });
