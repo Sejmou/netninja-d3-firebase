@@ -44,7 +44,7 @@ json<MenuEntry[]>('menu.json').then(data => {
   const yValue = (d: MenuEntry) => d.orders;
   const y = scaleLinear()
     .domain([0, max(data, yValue)!])
-    .range([0, graphHeight]);
+    .range([graphHeight, 0]);
 
   // join data to rect elements in SVG (as SVG is empty, we will only get enter selections and no actual already existing DOM elements)
   const bars = graph.selectAll('rect').data(data);
@@ -57,13 +57,16 @@ json<MenuEntry[]>('menu.json').then(data => {
       console.log('inside attribute setter in selection; received:', d, i, n);
       return 0;
     })
-    .attr('height', d => y(d.orders))
+    .attr('height', d => graphHeight - y(d.orders))
     .attr('width', x.bandwidth)
     .attr('x', d => x(d.name)!)
+    .attr('y', d => y(d.orders))
     .attr('fill', 'orange');
 
   // add axes
-  const xAxisGroup = graph.append('g');
+  const xAxisGroup = graph
+    .append('g')
+    .attr('transform', `translate(0, ${graphHeight})`);
   const yAxisGroup = graph.append('g');
   const xAxis = axisBottom(x);
   const yAxis = axisLeft(y);
