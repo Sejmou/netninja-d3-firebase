@@ -1,7 +1,10 @@
 import './style.css';
 import { select, json, scaleLinear, max, scaleBand } from 'd3';
 
-const svg = select('.canvas');
+const svg = select('.canvas')
+  .append('svg')
+  .attr('width', 600)
+  .attr('height', 600);
 
 interface MenuEntry {
   name: string;
