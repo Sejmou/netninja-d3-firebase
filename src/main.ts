@@ -67,10 +67,16 @@ json<MenuEntry[]>('menu.json').then(data => {
   const xAxisGroup = graph
     .append('g')
     .attr('transform', `translate(0, ${graphHeight})`);
+
   const yAxisGroup = graph.append('g');
   const xAxis = axisBottom(x);
   const yAxis = axisLeft(y);
 
   xAxisGroup.call(xAxis);
   yAxisGroup.call(yAxis);
+
+  xAxisGroup // rotate x-axis labels
+    .selectAll('text')
+    .attr('transform', 'rotate(-40)')
+    .attr('text-anchor', 'end'); // makes sure that the text is rotated around the end of the text, not the center
 });
